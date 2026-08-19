@@ -1,26 +1,28 @@
-# Proiect 1 — Automatizare Excel
+# Project 1 — Excel Automation
 
-Primul proiect aplicat: un script care corectează prețurile dintr-un registru Excel și
-adaugă automat un grafic, ca alternativă la munca manuală în foaia de calcul.
+The first applied project: a script that corrects prices in an Excel workbook and adds a chart
+automatically, as an alternative to doing the work by hand in the spreadsheet.
 
-## Ce face `exel_auto.py`
+> 🇷🇴 Documentul în limba română: [README.ro.md](README.ro.md)
 
-1. Deschide registrul cu `openpyxl` și selectează `Sheet1`.
-2. Parcurge fiecare rând de date, ia prețul din coloana 3 și scrie în coloana 4 prețul
-   redus cu 10 % (`* 0.9`).
-3. Construiește un `BarChart` peste coloana nou-creată și îl inserează în foaie la `E2`.
-4. Salvează registrul peste fișierul original.
+## What `exel_auto.py` does
 
-## Rulare
+1. Opens the workbook with `openpyxl` and selects `Sheet1`.
+2. Walks every data row, takes the price from column 3 and writes into column 4 the price reduced by
+   10 % (`* 0.9`).
+3. Builds a `BarChart` over the newly created column and inserts it into the sheet at `E2`.
+4. Saves the workbook over the original file.
+
+## Running
 
 ```bash
 pip install openpyxl
 python -c "from exel_auto import process_workbook; process_workbook('transactions.xlsx')"
 ```
 
-## Fișiere
+## Files
 
-- `exel_auto.py` — funcția `process_workbook(filename)`
-- `transactions.xlsx`, `transactions2.xlsx` — registrele de test
+- `exel_auto.py` — the `process_workbook(filename)` function
+- `transactions.xlsx`, `transactions2.xlsx` — the test workbooks
 
-> Scriptul suprascrie fișierul primit ca argument. Pentru teste repetate, lucrează pe o copie.
+> The script overwrites the file passed as an argument. For repeated tests, work on a copy.

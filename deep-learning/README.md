@@ -1,26 +1,28 @@
-# Exerciții Deep Learning
+# Deep Learning Exercises
 
-Zece exerciții scrise după parcurgerea cărții *Deep Learning with Python* (François Chollet).
-Fiecare fișier e un script independent care descarcă singur setul de date prin
-`keras.datasets` și compară două variante de model, ca să se vadă efectul unei singure
-decizii de arhitectură.
+Ten exercises written while working through *Deep Learning with Python* (François Chollet). Each
+file is a standalone script that downloads its own dataset through `keras.datasets` and compares two
+variants of a model, so that the effect of a single architectural decision becomes visible.
 
-Notițele pe capitole sunt în [`docs/notite-deep-learning.md`](../docs/notite-deep-learning.md).
+> 🇷🇴 Documentul în limba română: [README.ro.md](README.ro.md)
 
-| Fișier | Set de date | Ce compară |
+The chapter notes are in [`docs/notite-deep-learning.md`](../docs/notite-deep-learning.md)
+(in Romanian).
+
+| File | Dataset | What it compares |
 |---|---|---|
-| [`ex01_imdb_mlp_variants.py`](ex01_imdb_mlp_variants.py) | IMDB | variante de MLP pentru clasificare binară |
-| [`ex02_reuters_softmax_vs_sigmoid.py`](ex02_reuters_softmax_vs_sigmoid.py) | Reuters | softmax vs. sigmoid pe clasificare multiclasă |
-| [`ex03_boston_regression_norms.py`](ex03_boston_regression_norms.py) | Boston Housing | efectul normalizării datelor în regresie |
-| [`ex04_iris_mlp_vs_rf.py`](ex04_iris_mlp_vs_rf.py) | Iris | rețea neuronală vs. Random Forest |
-| [`ex05_mlp_with_dropout.py`](ex05_mlp_with_dropout.py) | IMDB | dropout ca metodă de regularizare |
-| [`ex06_boston_kfold_vs_split.py`](ex06_boston_kfold_vs_split.py) | Boston Housing | K-Fold vs. train/test simplu |
-| [`ex07_cifar10_cnn_augmentation.py`](ex07_cifar10_cnn_augmentation.py) | CIFAR-10 | CNN cu și fără data augmentation |
-| [`ex08_transfer_vgg16_cifar10.py`](ex08_transfer_vgg16_cifar10.py) | CIFAR-10 | transfer learning cu VGG16 pre-antrenat |
-| [`ex09_char_lstm_text_generation.py`](ex09_char_lstm_text_generation.py) | text propriu | generare de text caracter cu caracter (LSTM) |
-| [`ex10_multi_input_model.py`](ex10_multi_input_model.py) | date sintetice | model multi-input cu Keras Functional API |
+| [`ex01_imdb_mlp_variants.py`](ex01_imdb_mlp_variants.py) | IMDB | MLP variants for binary classification |
+| [`ex02_reuters_softmax_vs_sigmoid.py`](ex02_reuters_softmax_vs_sigmoid.py) | Reuters | softmax vs. sigmoid on multi-class classification |
+| [`ex03_boston_regression_norms.py`](ex03_boston_regression_norms.py) | Boston Housing | the effect of data normalisation in regression |
+| [`ex04_iris_mlp_vs_rf.py`](ex04_iris_mlp_vs_rf.py) | Iris | neural network vs. Random Forest |
+| [`ex05_mlp_with_dropout.py`](ex05_mlp_with_dropout.py) | IMDB | dropout as a regularisation method |
+| [`ex06_boston_kfold_vs_split.py`](ex06_boston_kfold_vs_split.py) | Boston Housing | K-Fold vs. a simple train/test split |
+| [`ex07_cifar10_cnn_augmentation.py`](ex07_cifar10_cnn_augmentation.py) | CIFAR-10 | CNN with and without data augmentation |
+| [`ex08_transfer_vgg16_cifar10.py`](ex08_transfer_vgg16_cifar10.py) | CIFAR-10 | transfer learning with a pre-trained VGG16 |
+| [`ex09_char_lstm_text_generation.py`](ex09_char_lstm_text_generation.py) | own text | character-level text generation (LSTM) |
+| [`ex10_multi_input_model.py`](ex10_multi_input_model.py) | synthetic data | multi-input model with the Keras Functional API |
 
-## Rulare
+## Running
 
 ```bash
 python -m venv .venv
@@ -29,5 +31,5 @@ pip install tensorflow scikit-learn numpy matplotlib
 python ex01_imdb_mlp_variants.py
 ```
 
-`ex07` și `ex08` (CIFAR-10, VGG16) sunt cele mai lente — pe CPU durează sensibil mai mult
-decât restul.
+`ex07` and `ex08` (CIFAR-10, VGG16) are the slowest — on a CPU they take considerably longer than
+the rest.
