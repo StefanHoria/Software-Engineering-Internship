@@ -1,75 +1,76 @@
-# VisionDemo — recunoaștere vizuală în timp real pe Android
+# VisionDemo — Real-Time Visual Recognition on Android
 
-Proiectul principal al practicii. Aplicația pornește camera telefonului și, pe fiecare
-cadru, rulează trei lucruri în paralel: găsește fața, estimează emoția / vârsta / genul
-și numără degetele ridicate. Rezultatul e afișat pe ecran și, opțional, citit cu voce tare.
+The main project of the internship. The app starts the phone camera and, on every frame, runs three
+things in parallel: it finds the face, estimates emotion / age / gender, and counts the raised
+fingers. The result is shown on screen and, optionally, read out loud.
+
+> 🇷🇴 Documentul în limba română: [README.ro.md](README.ro.md)
 
 <p align="center">
-  <img src="../../docs/media/visiondemo-screenshot.jpg" alt="VisionDemo rulând pe telefon" width="320">
+  <img src="../../docs/media/visiondemo-screenshot.jpg" alt="VisionDemo running on a phone" width="320">
 </p>
 
-> Bara de sus arată rezultatul curent (`emoție | vârstă | gen`), iar butoanele de jos
-> comută citirea vocală și lanterna.
-> Clip demo cu Text-to-Speech: [`docs/media/visiondemo-tts-demo.mov`](../../docs/media/visiondemo-tts-demo.mov) *(Git LFS)*
+> The top bar shows the current result (`emotion | age | gender`), and the buttons at the bottom
+> toggle speech output and the torch.
+> Text-to-Speech demo clip: [`docs/media/visiondemo-tts-demo.mov`](../../docs/media/visiondemo-tts-demo.mov) *(Git LFS)*
 
 ---
 
-## Funcționalități
+## Features
 
-| Funcție | Cum e implementată |
+| Feature | How it is implemented |
 |---|---|
-| Preview + analiză cadru cu cadru | CameraX (`Preview` + `ImageAnalysis`, backpressure `KEEP_ONLY_LATEST`) |
-| Detecția feței | ML Kit Face Detection — extrage ROI-ul feței |
-| Emoție / vârstă / gen | 3 modele TensorFlow Lite (DeepFace) rulate pe ROI |
-| Numărare degete | MediaPipe Hand Landmarker (21 landmark-uri × 2 mâini) |
-| Feedback audio | `TextToSpeech` Android, cu locale `ro-RO` și fallback pe `en-US` |
-| Lanternă | `CameraControl.enableTorch()` pentru lumină slabă |
+| Preview + frame-by-frame analysis | CameraX (`Preview` + `ImageAnalysis`, `KEEP_ONLY_LATEST` backpressure) |
+| Face detection | ML Kit Face Detection — extracts the face ROI |
+| Emotion / age / gender | 3 TensorFlow Lite models (DeepFace) run on the ROI |
+| Finger counting | MediaPipe Hand Landmarker (21 landmarks × 2 hands) |
+| Audio feedback | Android `TextToSpeech`, `ro-RO` locale with an `en-US` fallback |
+| Torch | `CameraControl.enableTorch()` for low light |
 
-## Arhitectura codului
+## Code architecture
 
 ```
 app/src/main/java/com/example/visiondemo/
-├── MainActivity.kt        # permisiuni, CameraX, orchestrarea pipeline-ului, UI, TTS
-├── EmotionAgeGender.kt    # clasa Eag — încarcă cele 3 modele .tflite și face inferența
-├── Hands.kt               # clasa Hands — HandLandmarker + logica de numărare a degetelor
-└── Extensions.kt          # utilitare (ImageProxy → Bitmap, corecție rotație, crop)
+├── MainActivity.kt        # permissions, CameraX, pipeline orchestration, UI, TTS
+├── EmotionAgeGender.kt    # the Eag class — loads the 3 .tflite models and runs inference
+├── Hands.kt               # the Hands class — HandLandmarker + finger counting logic
+└── Extensions.kt          # helpers (ImageProxy → Bitmap, rotation correction, crop)
 
-app/src/main/assets/       # modelele (urmărite prin Git LFS)
+app/src/main/assets/       # the models (tracked with Git LFS)
 ├── emotion_deepface.tflite
 ├── age_deepface.tflite
 ├── gender_deepface.tflite
 └── hand_landmarker.task
 ```
 
-### Detalii de implementare
+### Implementation details
 
-**`Eag`** citește la runtime shape-ul tensorului de intrare al fiecărui model
-(`interp.getInputTensor(0).shape()`), astfel încât aceeași clasă funcționează și dacă
-modelul cere 48×48 grayscale (emoție) sau 224×224 RGB (vârstă/gen). Emoțiile sunt mapate
-pe `angry, disgust, fear, happy, sad, surprise, neutral`.
+**`Eag`** reads each model's input tensor shape at runtime
+(`interp.getInputTensor(0).shape()`), so the same class works whether the model expects 48×48
+grayscale (emotion) or 224×224 RGB (age/gender). Emotions are mapped to
+`angry, disgust, fear, happy, sad, surprise, neutral`.
 
-**`Hands`** rulează landmarker-ul în `RunningMode.VIDEO` și decide dacă un deget e întins
-pe baza unghiului din articulații — prag `55°` pentru index/mijlociu/inelar/mic și `50°`
-pentru degetul mare. Pentru că rezultatul brut pâlpâia de la un cadru la altul, fiecare
-deget trece printr-un **vot majoritar pe ultimele 5 cadre** (`historySize = 5`), ceea ce
-a stabilizat numărătoarea.
+**`Hands`** runs the landmarker in `RunningMode.VIDEO` and decides whether a finger is extended from
+the joint angles — a `55°` threshold for index/middle/ring/little and `50°` for the thumb. Because
+the raw result flickered from frame to frame, every finger goes through a **majority vote over the
+last 5 frames** (`historySize = 5`), which stabilised the count.
 
-## Build & rulare
+## Build & run
 
-Cerințe: Android Studio (Ladybug+), **JDK 17**, un telefon Android cu API ≥ 24.
+Requirements: Android Studio (Ladybug+), **JDK 17**, an Android phone with API ≥ 24.
 
 ```bash
-git lfs install          # obligatoriu, altfel modelele rămân pointere de 130 de octeți
-git clone https://github.com/StefanHoria/Proiecte.git
+git lfs install          # required, otherwise the models stay 130-byte pointers
+git clone https://github.com/StefanHoria/Software-Engineering-Internship.git
 ```
 
-Deschide `android/VisionDemo` în Android Studio, lasă Gradle să sincronizeze, apoi Run.
-La prima pornire aplicația cere permisiunea pentru cameră.
+Open `android/VisionDemo` in Android Studio, let Gradle sync, then Run. On first launch the app asks
+for camera permission.
 
 `compileSdk = 36`, `minSdk = 24`, `jvmTarget = 17`.
 
-## Limitări cunoscute
+## Known limitations
 
-- În lumină slabă acuratețea scade vizibil (de aici și butonul de lanternă).
-- Estimarea vârstei e orientativă — modelele DeepFace sunt antrenate pe seturi generice.
-- Numărarea degetelor cere mâna relativ frontală față de cameră.
+- Accuracy drops noticeably in low light (hence the torch button).
+- Age estimation is indicative only — the DeepFace models are trained on generic datasets.
+- Finger counting needs the hand to face the camera reasonably straight on.

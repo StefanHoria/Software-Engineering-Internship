@@ -1,28 +1,30 @@
-# Proiect 3 — Website cu Django
+# Project 3 — Django Website
 
-Un magazin online minimal (`pyshop`), construit pentru a înțelege structura unui proiect
-Django: proiect → aplicație → model → view → template.
+A minimal online store (`pyshop`), built to understand the structure of a Django project:
+project → app → model → view → template.
 
-## Structura
+> 🇷🇴 Documentul în limba română: [README.ro.md](README.ro.md)
+
+## Structure
 
 ```
 manage.py
-pyshop/                  # configurarea proiectului (settings, urls, wsgi)
-products/                # aplicația propriu-zisă
-├── models.py            # Product (nume, preț, stoc, imagine) și Offer (cod, descriere, discount)
-├── views.py             # index — listează produsele; new — pagină simplă
-├── urls.py              # rutele aplicației
-├── admin.py             # înregistrarea modelelor în panoul de admin
+pyshop/                  # project configuration (settings, urls, wsgi)
+products/                # the app itself
+├── models.py            # Product (name, price, stock, image) and Offer (code, description, discount)
+├── views.py             # index — lists the products; new — a simple page
+├── urls.py              # the app's routes
+├── admin.py             # registering the models in the admin panel
 ├── migrations/          # 0001_initial, 0002_offer
-└── templates/index.html # lista de produse
-templates/base.html      # layout comun (Bootstrap)
-db.sqlite3               # baza de date de test, cu produsele demo
+└── templates/index.html # the product list
+templates/base.html      # shared layout (Bootstrap)
+db.sqlite3               # the test database, with the demo products
 ```
 
-`views.index` face `Product.objects.all()` și trimite lista către `index.html`, care o
-randează sub forma unor carduri.
+`views.index` calls `Product.objects.all()` and passes the list to `index.html`, which renders it as
+a set of cards.
 
-## Rulare
+## Running
 
 ```bash
 pip install django
@@ -30,5 +32,5 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Aplicația pornește pe <http://127.0.0.1:8000/>. Pentru panoul de admin
-(`/admin`) e nevoie de un superuser creat local cu `python manage.py createsuperuser`.
+The app starts at <http://127.0.0.1:8000/>. The admin panel (`/admin`) needs a superuser created
+locally with `python manage.py createsuperuser`.

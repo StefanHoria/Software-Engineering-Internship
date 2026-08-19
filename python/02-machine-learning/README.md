@@ -1,29 +1,30 @@
-# Proiect 2 — Machine Learning cu scikit-learn
+# Project 2 — Machine Learning with scikit-learn
 
-Primul contact cu machine learning „clasic”, înainte de partea de deep learning:
-un recomandator de gen muzical antrenat pe un set de date mic.
+A first contact with "classical" machine learning, before the deep learning part: a music genre
+recommender trained on a small dataset.
 
-## Notebook-ul `HelloWorld.ipynb`
+> 🇷🇴 Documentul în limba română: [README.ro.md](README.ro.md)
 
-- Încarcă `music.csv` (vârstă + gen → gen muzical preferat) cu pandas.
-- Antrenează un `DecisionTreeClassifier` pe caracteristicile `age` și `gender`.
-- Împarte datele cu `train_test_split` și măsoară `accuracy_score`.
-- Persistă modelul antrenat cu `joblib` → `music-recommender.joblib`, ca să nu fie nevoie
-  de reantrenare la fiecare rulare.
-- Exportă arborele de decizie cu `tree.export_graphviz` → `music-recommender.dot`.
+## The `HelloWorld.ipynb` notebook
 
-`vgsales.csv` (vânzări de jocuri video) a fost folosit pentru exerciții de explorare a
-datelor cu pandas.
+- Loads `music.csv` (age + gender → preferred music genre) with pandas.
+- Trains a `DecisionTreeClassifier` on the `age` and `gender` features.
+- Splits the data with `train_test_split` and measures `accuracy_score`.
+- Persists the trained model with `joblib` → `music-recommender.joblib`, so it does not have to be
+  retrained on every run.
+- Exports the decision tree with `tree.export_graphviz` → `music-recommender.dot`.
 
-## Vizualizarea arborelui
+`vgsales.csv` (video game sales) was used for data exploration exercises with pandas.
 
-Fișierul `.dot` se deschide cu extensia *Graphviz* din VS Code sau se convertește:
+## Visualising the tree
+
+The `.dot` file opens with the *Graphviz* extension in VS Code, or can be converted:
 
 ```bash
 dot -Tpng music-recommender.dot -o music-recommender.png
 ```
 
-## Rulare
+## Running
 
 ```bash
 pip install pandas scikit-learn joblib jupyter
